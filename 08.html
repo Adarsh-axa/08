@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To My Dearest Momo 🌸</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: #FFEE8C; /* Pastel yellow background */
+      overflow: hidden;
+      color: #800080; /* Deep lavender text color */
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      margin: 10px 0;
+    }
+
+    #blossoms {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hug-button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #800080; /* Lavender button */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .hug-button:hover {
+      background-color: #993399;
+    }
+
+    #hug-message {
+      margin-top: 10px;
+      display: none;
+      font-size: 1.5rem;
+      color: #993399;
+    }
+
+    .sidebar-buttons {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-buttons button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      color: white;
+      background-color: #800080;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar-buttons button:hover {
+      background-color: #993399;
+    }
+
+    #motivation-message {
+      display: none;
+      margin-top: 10px;
+      font-size: 1.25rem;
+      color: #993399;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>To My Precious Momo 🌸</h1>
+    <p>
+      Hey Misty,  
+      I know that the second day of your period can be incredibly tough. It’s okay to feel overwhelmed; you’re human, and your feelings are valid. But I want you to take a moment to breathe and picture yourself surrounded by a lavender garden of cherry blossoms, their soft petals whispering words of comfort to you.
+    </p>
+    <p>
+      You are never alone, even in these moments of struggle. I’m here to remind you that you are a warrior in your own right. Every pain, every ache, only proves how resilient and incredible you are. Keep pushing forward, one gentle step at a time.
+    </p>
+    <p>
+      These blossoms are my love and care floating to you—reminders that you’re strong, cherished, and endlessly loved. 
+    </p>
+
+    <button class="hug-button" id="hug-button">Need a warm hug? 💜</button>
+    <p id="hug-message">You're surrounded by love and hugs right now! 💖</p>
+  </div>
+
+  <div class="sidebar-buttons">
+    <button id="motivate-button">Uplift Me 💪</button>
+    <p id="motivation-message"></p>
+  </div>
+
+  <canvas id="blossoms"></canvas>
+
+  <audio id="background-music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mpeg">
+
+  </audio>
+
+  <script>
+    const canvas = document.getElementById("blossoms");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const petals = [];
+    const petalCount = 150;
+    const colors = ["#E6E6FA", "#D8BFD8", "#BA55D3", "#9370DB", "#8A2BE2"]; /* Lavender tones */
+
+    class Petal {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.radius = Math.random() * 3 + 2;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.speed = Math.random() * 1 + 0.5;
+        this.wind = Math.random() * 0.5 - 0.25;
+      }
+
+      update() {
+        this.y += this.speed;
+        this.x += this.wind;
+
+        if (this.y > canvas.height) {
+          this.y = -10;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < petalCount; i++) {
+      petals.push(new Petal());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      petals.forEach((petal) => {
+        petal.update();
+        petal.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Hug Button
+    document.getElementById("hug-button").addEventListener("click", () => {
+      const hugMessage = document.getElementById("hug-message");
+      const music = document.getElementById("background-music");
+      hugMessage.style.display = "block";
+      music.play();
+      setTimeout(() => {
+        hugMessage.style.display = "none";
+      }, 3000);
+    });
+
+    // Motivational Pop-ups
+    const motivationalQuotes = [
+      "You are brave, Momo! 💪",
+      "Even lavender blooms under pressure. 🌸",
+      "Your inner strength shines bright. 🌟",
+      "Take it easy; you're doing amazing. 💜",
+      "The storm will pass, and you'll bloom again. 💖"
+    ];
+    document.getElementById("motivate-button").addEventListener("click", () => {
+      const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+      const message = document.getElementById("motivation-message");
+      message.textContent = randomQuote;
+      message.style.display = "block";
+      setTimeout(() => {
+        message.style.display = "none";
+      }, 4000);
+    });
+  </script>
+</body>
+</html>
